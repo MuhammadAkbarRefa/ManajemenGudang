@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block title %}Layani Truk{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Layani Truk Berikutnya</h2>
+    {% if truk %}
+        <div class="card truck-info-card">
+            <h3>Truk yang Dilayani: <span class="highlight">{{ truk.plat }}</span></h3>
+            <p><strong>Supir:</strong> {{ truk.supir }}</p>
+            <p><strong>Muatan yang Dilaporkan:</strong> 
+                {% if truk.muatan %}
+                    {{ truk.muatan|join(', ') }}
+                {% else %}
+                    <span class="text-muted">Tidak ada data muatan yang dilaporkan</span>
+                {% endif %}
+            </p>
+        </div>
+
+        <h3 class="section-subtitle">Masukkan Detail Barang dari Truk ini:</h3>
+        <form method="POST" action="{{ url_for('antrian_serve') }}" class="form-card">
+            <div id="barang-inputs-container">
+                {# Initial single barang input #}
+                <div class="barang-item-group" id="barang-item-group-0">
+                    <div class="form-group-grid">
+                        <label for="nama_barang_0">Nama Barang:</label>
+                        <input type="text" id="nama_barang_0" name="nama_barang_0" required>
+
+                        <label for="stok_0">Stok:</label>
+                        <input type="number" id="stok_0" name="stok_0" min="1" required>
+
+                        <label for="kadaluarsa_0">Kadaluarsa (YYYY-MM-DD):</label>
+                        <input type="date" id="kadaluarsa_0" name="kadaluarsa_0" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-group-inline">
+                <button type="button" class="button secondary" onclick="addBarangInput()">+ Tambah Barang Lain</button>
+                <button type="button" class="button danger" onclick="removeLastBarangInput()">- Hapus Barang Terakhir</button>
+            </div>
+            <br>
+            <button type="submit" class="button primary">Selesaikan Pelayanan Truk & Masukkan Barang</button>
+            <a href="{{ url_for('antrian_list') }}" class="button secondary">Batal</a>
+        </form>
+
+        <script>
+            let barangCounter = 1; // Start counter from 1 for new inputs
+
+            function addBarangInput() {
+                const container = document.getElementById('barang-inputs-container');
+                const newDiv = document.createElement('div');
+                newDiv.classList.add('barang-item-group'); // Apply the new class for styling
+                newDiv.id = `barang-item-group-${barangCounter}`; // Add unique ID
+
+                newDiv.innerHTML = `
+                    <hr class="form-divider">
+                    <div class="form-group-grid">
+                        <label for="nama_barang_${barangCounter}">Nama Barang:</label>
+                        <input type="text" id="nama_barang_${barangCounter}" name="nama_barang_${barangCounter}" required>
+
+                        <label for="stok_${barangCounter}">Stok:</label>
+                        <input type="number" id="stok_${barangCounter}" name="stok_${barangCounter}" min="1" required>
+
+                        <label for="kadaluarsa_${barangCounter}">Kadaluarsa (YYYY-MM-DD):</label>
+                        <input type="date" id="kadaluarsa_${barangCounter}" name="kadaluarsa_${barangCounter}" required>
+                    </div>
+                `;
+                container.appendChild(newDiv);
+                barangCounter++;
+            }
+
+            function removeLastBarangInput() {
+                const container = document.getElementById('barang-inputs-container');
+                if (container.children.length > 1) { // Ensure at least one input group remains
+                    const lastChild = container.lastElementChild;
+                    container.removeChild(lastChild);
+                    barangCounter--; // Decrement counter as an input group is removed
+                } else {
+                    alert("Minimal harus ada satu set input barang.");
+                }
+            }
+        </script>
+    {% else %}
+        <p class="info-message">Tidak ada truk dalam antrian untuk dilayani.</p>
+        <p><a href="{{ url_for('antrian_list') }}" class="button">Kembali ke Antrian Truk</a></p>
+    {% endif %}
+{% endblock %}

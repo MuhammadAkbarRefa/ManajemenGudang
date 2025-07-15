@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}Daftar Stok Gudang{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Daftar Stok Gudang</h2>
+    <div class="button-group">
+        <a href="{{ url_for('gudang_search') }}" class="button">Cari Barang</a>
+        <a href="{{ url_for('gudang_take') }}" class="button">Ambil Barang</a>
+        <a href="{{ url_for('gudang_update') }}" class="button">Perbarui Barang</a>
+        <a href="{{ url_for('gudang_delete') }}" class="button danger">Hapus Barang</a>
+        <a href="{{ url_for('gudang_sort') }}" class="button">Urutkan Berdasarkan Stok</a>
+    </div>
+
+    {% if gudang %}
+        <div class="card-grid">
+            {% for id_brg, data in gudang.items() | sort(attribute='1.nama') %} {# Sort by name #}
+                <div class="card item-card">
+                    <h3><span class="highlight">{{ data.nama }}</span> (ID: {{ id_brg }})</h3>
+                    <p>Total Stok: <strong class="stock-count">{{ data.batches | sum(attribute='stok') }}</strong> unit</p>
+                    {% if data.batches %}
+                        <h4 class="batch-title">Detail Batch:</h4>
+                        <ul class="batch-list">
+                            {% for batch in data.batches %}
+                                <li class="batch-item">
+                                    Stok: {{ batch.stok }} | Kadaluarsa: <strong>{{ batch.kadaluarsa.strftime('%d %B %Y') }}</strong>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="no-stock">(Stok Habis)</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="info-message">Gudang masih kosong.</p>
+    {% endif %}
+{% endblock %}

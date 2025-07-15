@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}Selamat Datang{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Selamat Datang di Sistem Manajemen Gudang!</h2>
+    <p>Aplikasi ini membantu Anda mengelola antrian truk yang masuk dan stok barang di gudang.</p>
+    <div class="summary-cards">
+        <div class="summary-card">
+            <h3>Truk dalam Antrian</h3>
+            <p>{{ antrian_count }} Truk</p>
+            <a href="{{ url_for('antrian_list') }}" class="button small">Lihat Antrian</a>
+        </div>
+        <div class="summary-card">
+            <h3>Barang Unik di Gudang</h3>
+            <p>{{ gudang_item_count }} Jenis Barang</p>
+            <a href="{{ url_for('gudang_list') }}" class="button small">Lihat Gudang</a>
+        </div>
+    </div>
+    <p class="call-to-action">Mulai kelola gudang Anda sekarang!</p>
+{% endblock %}

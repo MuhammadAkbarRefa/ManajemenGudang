@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Riwayat Transaksi{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Riwayat Transaksi Gudang</h2>
+    {% if riwayat %}
+        <div class="transaction-log-container">
+            {% for transaksi in riwayat %}
+                <div class="transaction-item">
+                    <span class="timestamp">[{{ transaksi.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}]</span>
+                    <span class="type type-{{ transaksi.tipe.lower().replace('_', '-') }}">[{{ transaksi.tipe }}]</span>
+                    Barang: <strong>{{ transaksi.nama_barang }}</strong> (ID: {{ transaksi.id_barang }}), 
+                    Jumlah: <span class="jumlah">{{ transaksi.jumlah if transaksi.jumlah != 0 else '-' }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        {% if riwayat|length >= 50 %}
+            <p class="info-message">Menampilkan 50 transaksi terbaru. Ada lebih banyak di log.</p>
+        {% endif %}
+    {% else %}
+        <p class="info-message">Belum ada riwayat transaksi.</p>
+    {% endif %}
+{% endblock %}

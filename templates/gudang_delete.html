@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}Hapus Barang{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Hapus Barang dari Gudang</h2>
+    {% if gudang_items %}
+        <form method="POST" action="{{ url_for('gudang_delete') }}" class="form-card">
+            <div class="form-group">
+                <label for="id_barang">Pilih Barang untuk Dihapus:</label>
+                <select id="id_barang" name="id_barang" required>
+                    <option value="">-- Pilih Barang --</option>
+                    {% for id, item in gudang_items.items() | sort(attribute='1.nama') %}
+                        <option value="{{ id }}">{{ item.nama }} (ID: {{ id }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="button danger" 
+                    onclick="return confirm('Anda yakin ingin menghapus barang ini secara permanen? Aksi ini tidak dapat dibatalkan.');">
+                Hapus Barang
+            </button>
+            <a href="{{ url_for('gudang_list') }}" class="button secondary">Batal</a>
+        </form>
+    {% else %}
+        <p class="info-message">Gudang kosong. Tidak ada barang untuk dihapus.</p>
+        <p><a href="{{ url_for('gudang_list') }}" class="button">Kembali ke Daftar Gudang</a></p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}Cari Barang{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Pencarian Barang</h2>
+    <form method="POST" action="{{ url_for('gudang_search') }}" class="form-card search-form">
+        <div class="form-group">
+            <label for="query">Masukkan Nama atau ID Barang:</label>
+            <input type="text" id="query" name="query" value="{{ query }}" required autofocus>
+        </div>
+        <button type="submit" class="button primary">Cari</button>
+    </form>
+
+    {% if hasil %}
+        <h3 class="section-subtitle">Hasil Pencarian:</h3>
+        <div class="card-grid">
+            {% for item in hasil %}
+                <div class="card item-card">
+                    <h3><span class="highlight">{{ item.nama }}</span> (ID: {{ item.id }})</h3>
+                    <p>Total Stok: <strong class="stock-count">{{ item.total_stok }}</strong> unit</p>
+                    {% if item.batches %}
+                        <h4 class="batch-title">Detail Batch:</h4>
+                        <ul class="batch-list">
+                            {% for batch in item.batches %}
+                                <li class="batch-item">
+                                    Stok: {{ batch.stok }} | Kadaluarsa: <strong>{{ batch.kadaluarsa.strftime('%d %B %Y') }}</strong>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% elif query %} {# Only show if query was made but no results #}
+        <p class="info-message">Barang dengan query "{{ query }}" tidak ditemukan.</p>
+    {% endif %}
+{% endblock %}

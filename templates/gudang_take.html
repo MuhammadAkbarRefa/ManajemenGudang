@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}Ambil Barang{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Pengambilan Barang dari Gudang</h2>
+    {% if gudang_items %}
+        <form method="POST" action="{{ url_for('gudang_take') }}" class="form-card">
+            <div class="form-group">
+                <label for="id_barang">Pilih Barang:</label>
+                <select id="id_barang" name="id_barang" required>
+                    <option value="">-- Pilih Barang --</option>
+                    {% for id, item in gudang_items.items() | sort(attribute='1.nama') %}
+                        <option value="{{ id }}">{{ item.nama }} (ID: {{ id }}) - Stok: {{ item.batches | sum(attribute='stok') }}</option>
+                    {% endfor %}
+                </select>
+                <small class="form-hint">Pilih barang dari daftar yang masih memiliki stok.</small>
+            </div>
+            <div class="form-group">
+                <label for="jumlah_ambil">Jumlah yang ingin diambil:</label>
+                <input type="number" id="jumlah_ambil" name="jumlah_ambil" min="1" required>
+            </div>
+            <button type="submit" class="button primary">Ambil Barang</button>
+            <a href="{{ url_for('gudang_list') }}" class="button secondary">Batal</a>
+        </form>
+    {% else %}
+        <p class="info-message">Gudang kosong atau tidak ada stok untuk diambil.</p>
+        <p><a href="{{ url_for('gudang_list') }}" class="button">Kembali ke Daftar Gudang</a></p>
+    {% endif %}
+{% endblock %}

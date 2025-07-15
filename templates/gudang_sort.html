@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Urutkan Barang Berdasarkan Stok{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">{{ judul }}</h2>
+    <div class="button-group">
+        <a href="{{ url_for('gudang_sort', sort='terbanyak') }}" class="button {% if request.args.get('sort', 'terbanyak') == 'terbanyak' %}active{% endif %}">Stok Terbanyak</a>
+        <a href="{{ url_for('gudang_sort', sort='tersedikit') }}" class="button {% if request.args.get('sort') == 'tersedikit' %}active{% endif %}">Stok Tersedikit</a>
+    </div>
+
+    {% if daftar_urut %}
+        <ul class="item-list sorted-list">
+            {% for item in daftar_urut %}
+                <li>📦 <strong>{{ item.nama }}</strong> | Total Stok: <span class="stock-count">{{ item.total_stok }}</span> unit (ID: {{ item.id }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="info-message">Tidak ada barang dengan stok yang terdata.</p>
+    {% endif %}
+    <p><a href="{{ url_for('gudang_list') }}" class="button secondary">Kembali ke Daftar Gudang</a></p>
+{% endblock %}

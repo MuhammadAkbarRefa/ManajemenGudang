@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block title %}Update Barang{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Perbarui Informasi Barang</h2>
+    {% if gudang_items %}
+        <form method="POST" action="{{ url_for('gudang_update') }}" class="form-card">
+            <div class="form-group">
+                <label for="id_barang">Pilih Barang untuk Diupdate:</label>
+                <select id="id_barang" name="id_barang" required onchange="displayItemDetails()">
+                    <option value="">-- Pilih Barang --</option>
+                    {% for id, item in gudang_items.items() | sort(attribute='1.nama') %}
+                        <option value="{{ id }}" 
+                                data-nama="{{ item.nama }}" 
+                                data-batches='{{ item.batches | tojson }}'>
+                            {{ item.nama }} (ID: {{ id }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div id="item-details" style="display:none;" class="card item-details-card">
+                <h3 class="section-subtitle">Detail Barang Terpilih:</h3>
+                <div class="form-group">
+                    <label for="current_nama">Nama Saat Ini:</label>
+                    <input type="text" id="current_nama" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="new_name">Nama Baru (kosongkan jika tidak diubah):</label>
+                    <input type="text" id="new_name" name="new_name" placeholder="Masukkan nama baru">
+                </div>
+
+                <hr class="form-divider">
+                <h4 class="section-subtitle">Perbarui Batch (opsional):</h4>
+                <p class="info-message">Isi hanya kolom yang ingin diubah pada setiap batch.</p>
+                <div id="batch-update-forms-container">
+                    </div>
+            </div>
+
+            <button type="submit" class="button primary">Perbarui Barang</button>
+            <a href="{{ url_for('gudang_list') }}" class="button secondary">Batal</a>
+        </form>
+    {% else %}
+        <p class="info-message">Gudang kosong. Tidak ada barang untuk diupdate.</p>
+        <p><a href="{{ url_for('gudang_list') }}" class="button">Kembali ke Daftar Gudang</a></p>
+    {% endif %}
+
+    <script>
+        function displayItemDetails() {
+            const selectElement = document.getElementById('id_barang');
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const itemDetailsDiv = document.getElementById('item-details');
+            const currentNamaInput = document.getElementById('current_nama');
+            const batchUpdateFormsContainer = document.getElementById('batch-update-forms-container');
+
+            if (selectedOption.value) {
+                const nama = selectedOption.dataset.nama;
+                // Parse the JSON string from data-batches attribute
+                let batches = [];
+                try {
+                    batches = JSON.parse(selectedOption.dataset.batches);
+                } catch (e) {
+                    console.error("Error parsing batches JSON:", e);
+                }
+
+                currentNamaInput.value = nama;
+                itemDetailsDiv.style.display = 'block';
+
+                batchUpdateFormsContainer.innerHTML = ''; // Clear previous batch forms
+                if (batches.length > 0) {
+                    batches.forEach((batch, index) => {
+                        const batchDiv = document.createElement('div');
+                        batchDiv.classList.add('batch-update-item');
+                        batchDiv.innerHTML = `
+                            <h4>Batch ${index + 1}: (Kadaluarsa Asli: ${batch.kadaluarsa}, Stok Asli: ${batch.stok})</h4>
+                            <input type="hidden" name="original_batch_idx_${index}" value="${index}">
+                            <div class="form-group-grid">
+                                <label for="new_stok_${index}">Stok Baru:</label>
+                                <input type="number" id="new_stok_${index}" name="new_stok_${index}" min="0" placeholder="${batch.stok}">
+                                <label for="new_kadaluarsa_${index}">Tanggal Kadaluarsa Baru (YYYY-MM-DD):</label>
+                                <input type="date" id="new_kadaluarsa_${index}" name="new_kadaluarsa_${index}" value="${batch.kadaluarsa}">
+                            </div>
+                        `;
+                        batchUpdateFormsContainer.appendChild(batchDiv);
+                    });
+                } else {
+                    batchUpdateFormsContainer.innerHTML = '<p class="info-message">Tidak ada batch untuk barang ini.</p>';
+                }
+            } else {
+                itemDetailsDiv.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Daftar Antrian Truk{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Daftar Antrian Truk</h2>
+    <div class="button-group">
+        <a href="{{ url_for('antrian_add') }}" class="button">Tambah Truk Baru</a>
+        <a href="{{ url_for('antrian_serve') }}" class="button primary">Layani Truk Berikutnya</a>
+    </div>
+
+    {% if antrian_truk %}
+        <div class="card-grid">
+            {% for truk in antrian_truk %}
+                <div class="card">
+                    <h3>Plat: {{ truk.plat }}</h3>
+                    <p>Supir: {{ truk.supir }}</p>
+                    <p>Muatan: 
+                        {% if truk.muatan %}
+                            {{ truk.muatan|join(', ') }}
+                        {% else %}
+                            <span class="text-muted">Tidak ada data muatan</span>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="info-message">Antrian kosong.</p>
+    {% endif %}
+{% endblock %}

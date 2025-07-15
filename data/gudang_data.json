@@ -1,0 +1,97 @@
+{
+    "antrian_truk": [],
+    "gudang": {},
+    "riwayat_transaksi": [
+        {
+            "timestamp": "2025-07-09 00:15:49.324811",
+            "tipe": "MASUK",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 100
+        },
+        {
+            "timestamp": "2025-07-09 00:15:49.324811",
+            "tipe": "MASUK",
+            "id_barang": "BRG-C86CF9",
+            "nama_barang": "minyak",
+            "jumlah": 50
+        },
+        {
+            "timestamp": "2025-07-09 00:16:32.530513",
+            "tipe": "MASUK",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 500
+        },
+        {
+            "timestamp": "2025-07-09 00:17:56.335025",
+            "tipe": "KELUAR",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 500
+        },
+        {
+            "timestamp": "2025-07-09 00:17:56.335025",
+            "tipe": "HAPUS_BATCH_KOSONG_KELUAR",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 0
+        },
+        {
+            "timestamp": "2025-07-09 00:18:12.949320",
+            "tipe": "KELUAR",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 50
+        },
+        {
+            "timestamp": "2025-07-09 08:33:34.994704",
+            "tipe": "KELUAR",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 50
+        },
+        {
+            "timestamp": "2025-07-09 08:33:34.994704",
+            "tipe": "HAPUS_BATCH_KOSONG_KELUAR",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 0
+        },
+        {
+            "timestamp": "2025-07-09 08:33:44.338880",
+            "tipe": "KELUAR",
+            "id_barang": "BRG-C86CF9",
+            "nama_barang": "minyak",
+            "jumlah": 50
+        },
+        {
+            "timestamp": "2025-07-09 08:33:44.338880",
+            "tipe": "HAPUS_BATCH_KOSONG_KELUAR",
+            "id_barang": "BRG-C86CF9",
+            "nama_barang": "minyak",
+            "jumlah": 0
+        },
+        {
+            "timestamp": "2025-07-09 08:34:46.072227",
+            "tipe": "MASUK",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 1000
+        },
+        {
+            "timestamp": "2025-07-09 21:28:35.389282",
+            "tipe": "HAPUS_BARANG",
+            "id_barang": "BRG-70BFE6",
+            "nama_barang": "beras",
+            "jumlah": 0
+        },
+        {
+            "timestamp": "2025-07-09 21:28:42.032196",
+            "tipe": "HAPUS_BARANG",
+            "id_barang": "BRG-C86CF9",
+            "nama_barang": "minyak",
+            "jumlah": 0
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Tambah Truk{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Tambah Truk Baru ke Antrian</h2>
+    <form method="POST" action="{{ url_for('antrian_add') }}" class="form-card">
+        <div class="form-group">
+            <label for="plat_nomor">Plat Nomor Truk:</label>
+            <input type="text" id="plat_nomor" name="plat_nomor" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="nama_supir">Nama Supir:</label>
+            <input type="text" id="nama_supir" name="nama_supir" required>
+        </div>
+        <div class="form-group">
+            <label for="muatan">Muatan Barang (pisahkan dengan koma):</label>
+            <input type="text" id="muatan" name="muatan" placeholder="Contoh: Apel, Jeruk, Beras">
+            <small class="form-hint">Opsional. Pisahkan dengan koma jika ada lebih dari satu jenis barang.</small>
+        </div>
+        <button type="submit" class="button primary">Tambah Truk</button>
+        <a href="{{ url_for('antrian_list') }}" class="button secondary">Batal</a>
+    </form>
+{% endblock %}
